@@ -6,12 +6,14 @@ public class MainClass
 	public static void Main()
 	{
 		// keep this function call here
-		Console.WriteLine(2 == ArrayChallenge(new string[]{"I", "2", "4", "3", "4", "5", "2", "0", "2", "2", "3", "3", "3"}));
-		Console.WriteLine(0 == ArrayChallenge(new string[]{"O", "4", "3", "2", "3", "5", "1", "0", "1", "2", "4", "3", "4"}));
+		//Console.WriteLine(2 == ArrayChallenge(new string[]{"I", "2", "4", "3", "4", "5", "2", "0", "2", "2", "3", "3", "3"}));
+		//Console.WriteLine(0 == ArrayChallenge(new string[]{"O", "4", "3", "2", "3", "5", "1", "0", "1", "2", "4", "3", "4"}));
+		Console.WriteLine(2 == ArrayChallenge(new string[]{"S", "3", "3", "3", "3", "3", "1", "0", "3", "3", "3", "3", "4"}));
 	}
 
 	static int getFilledRows(int[, ] board, int[, ] smallMatrix)
 	{
+		printMatrix(smallMatrix);
 		int[, ] largeMatrix = (int[, ])board.Clone();
 		int largeMatrixRows = largeMatrix.GetLength(0);
 		int largeMatrixCols = largeMatrix.GetLength(1);
@@ -52,7 +54,6 @@ public class MainClass
 					continue;
 				}
 
-				//printMatrix(largeMatrix);
 				//otherwise, check how many rows in the matrix are fully filled with ones
 				int filledRows = 0;
 				for (int i = 0; i < largeMatrixRows; i++)
@@ -73,8 +74,13 @@ public class MainClass
 					}
 				}
 
-				//Console.WriteLine($"num Filled Rows: {filledRows}");
-				maxFilledRows = Math.Max(filledRows, maxFilledRows);
+				if (filledRows > 0)
+				{
+					printMatrix(largeMatrix);
+					Console.WriteLine($"num Filled Rows: {filledRows}");
+					maxFilledRows = Math.Max(filledRows, maxFilledRows);
+				}
+
 				//reset board
 				largeMatrix = (int[, ])board.Clone();
 			}
@@ -103,6 +109,7 @@ public class MainClass
 
 	public static int ArrayChallenge(string[] strArr)
 	{
+		//"2", "4", "3", "4", "5", "2", "0", "2", "2", "3", "3", "3"
 		int boardRows = 10;
 		int boardCols = 12;
 		int[, ] origBoard = new int[boardRows, boardCols];
@@ -116,50 +123,51 @@ public class MainClass
 		}
 
 		printMatrix(origBoard);
+		int lines;
 		int maxLines = 0;
 		switch (strArr[0])
 		{
 			case "I":
 			{
-				int[, ] v = {{1}, {1}, {1}, {1}};
-				int lines = getFilledRows(origBoard, v);
-				maxLines = Math.Max(lines, maxLines);
 				int[, ] h = {{1, 1, 1, 1}};
 				lines = getFilledRows(origBoard, h);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v = {{1}, {1}, {1}, {1}};
+				lines = getFilledRows(origBoard, v);
 				maxLines = Math.Max(lines, maxLines);
 			}
 
 				break;
 			case "J":
 			{
-				int[, ] v1 = {{0, 1}, {0, 1}, {1, 1}};
-				int lines = getFilledRows(origBoard, v1);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] h1 = {{1, 0, 0}, {1, 1, 1}};
+				int[, ] h1 = {{1, 1, 1}, {0, 0, 1}};
 				lines = getFilledRows(origBoard, h1);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v1 = {{0, 1}, {0, 1}, {1, 1}};
+				lines = getFilledRows(origBoard, v1);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] h2 = {{1, 0, 0}, {1, 1, 1}};
+				lines = getFilledRows(origBoard, h2);
 				maxLines = Math.Max(lines, maxLines);
 				int[, ] v2 = {{1, 1}, {1, 0}, {1, 0}};
 				lines = getFilledRows(origBoard, v2);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] h2 = {{1, 1, 1}, {0, 0, 1}};
-				lines = getFilledRows(origBoard, h2);
 				maxLines = Math.Max(lines, maxLines);
 			}
 
 				break;
 			case "L":
 			{
-				int[, ] v1 = {{1, 0}, {1, 0}, {1, 1}};
-				int lines = getFilledRows(origBoard, v1);
-				maxLines = Math.Max(lines, maxLines);
 				int[, ] h1 = {{1, 1, 1}, {1, 0, 0}};
 				lines = getFilledRows(origBoard, h1);
 				maxLines = Math.Max(lines, maxLines);
-				int[, ] v2 = {{1, 1}, {0, 1}, {0, 1}};
-				lines = getFilledRows(origBoard, v2);
+				int[, ] v1 = {{1, 0}, {1, 0}, {1, 1}};
+				lines = getFilledRows(origBoard, v1);
 				maxLines = Math.Max(lines, maxLines);
 				int[, ] h2 = {{0, 0, 1}, {1, 1, 1}};
 				lines = getFilledRows(origBoard, h2);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v2 = {{1, 1}, {0, 1}, {0, 1}};
+				lines = getFilledRows(origBoard, v2);
 				maxLines = Math.Max(lines, maxLines);
 			}
 
@@ -167,52 +175,53 @@ public class MainClass
 			case "O":
 			{
 				int[, ] v = {{1, 1}, {1, 1}, };
-				int lines = getFilledRows(origBoard, v);
-				maxLines = Math.Max(lines, maxLines);
-			}
-
-				break;
-			case "S":
-			{
-				int[, ] v = {{1, 0}, {1, 1}, {0, 1}};
-				int lines = getFilledRows(origBoard, v);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] h = {{0, 1, 1}, {1, 1, 0}};
-				lines = getFilledRows(origBoard, h);
-				maxLines = Math.Max(lines, maxLines);
-			}
-
-				break;
-			case "T":
-			{
-				int[, ] v1 = {{1, 0}, {1, 1}, {1, 0}};
-				int lines = getFilledRows(origBoard, v1);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] h1 = {{0, 1, 0}, {1, 1, 1}};
-				lines = getFilledRows(origBoard, h1);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] v2 = {{0, 1}, {1, 1}, {0, 1}};
-				lines = getFilledRows(origBoard, v2);
-				maxLines = Math.Max(lines, maxLines);
-				int[, ] h2 = {{1, 1, 1}, {0, 1, 0}};
-				lines = getFilledRows(origBoard, h2);
+				lines = getFilledRows(origBoard, v);
 				maxLines = Math.Max(lines, maxLines);
 			}
 
 				break;
 			case "Z":
 			{
-				int[, ] v = {{0, 1}, {1, 1}, {1, 0}};
-				int lines = getFilledRows(origBoard, v);
+				int[, ] h = {{0, 1, 1}, {1, 1, 0}};
+				lines = getFilledRows(origBoard, h);
 				maxLines = Math.Max(lines, maxLines);
+				int[, ] v = {{1, 0}, {1, 1}, {0, 1}};
+				lines = getFilledRows(origBoard, v);
+				maxLines = Math.Max(lines, maxLines);
+			}
+
+				break;
+			case "T":
+			{
+				int[, ] h1 = {{1, 1, 1}, {0, 1, 0}};
+				lines = getFilledRows(origBoard, h1);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v1 = {{1, 0}, {1, 1}, {1, 0}};
+				lines = getFilledRows(origBoard, v1);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] h2 = {{0, 1, 0}, {1, 1, 1}};
+				lines = getFilledRows(origBoard, h2);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v2 = {{0, 1}, {1, 1}, {0, 1}};
+				lines = getFilledRows(origBoard, v2);
+				maxLines = Math.Max(lines, maxLines);
+			}
+
+				break;
+			case "S":
+			{
 				int[, ] h = {{1, 1, 0}, {0, 1, 1}};
 				lines = getFilledRows(origBoard, h);
+				maxLines = Math.Max(lines, maxLines);
+				int[, ] v = {{0, 1}, {1, 1}, {1, 0}};
+				lines = getFilledRows(origBoard, v);
 				maxLines = Math.Max(lines, maxLines);
 			}
 
 				break;
 		}
 
+		Console.WriteLine($"Max Lines: {maxLines}");
 		return maxLines;
 	}
 }
